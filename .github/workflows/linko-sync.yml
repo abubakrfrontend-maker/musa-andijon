@@ -31,6 +31,9 @@ jobs:
       - name: Linko sinxronini chaqirish
         env:
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          # Sayt manzili: Settings → Secrets and variables → Actions →
+          # Variables → SITE_URL. Bo'sh bo'lsa pastdagi zaxira ishlatiladi.
+          SITE_URL: ${{ vars.SITE_URL || 'https://musa-andijon-v3ug.vercel.app' }}
         run: |
           if [ -z "$CRON_SECRET" ]; then
             echo "::error::CRON_SECRET sozlanmagan (Settings → Secrets and variables → Actions)"
@@ -38,7 +41,7 @@ jobs:
           fi
           code=$(curl -sS -o response.json -w '%{http_code}' --max-time 240 \
             -H "x-cron-secret: $CRON_SECRET" \
-            https://musa-andijon-v3ug.vercel.app/api/linko-cron)
+            "${SITE_URL%/}/api/linko-cron")
           echo "HTTP $code"
           head -c 1500 response.json; echo
           test "$code" = "200"

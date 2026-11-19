@@ -45,7 +45,11 @@ CRON_SECRET  = os.environ.get("CRON_SECRET", "")
 BOT_USERNAME = "musa_andijon_bot"
 ADMIN_IDS    = {7203124812}   # Egalar — panel orqali o'chirib bo'lmaydi.
 # BotFather /setdomain da ham aynan shu domen ko'rsatilgan bo'lishi kerak.
-MINI_APP_URL = "https://musa-andijon-v3ug.vercel.app"
+# Sayt boshqa Vercel'ga ko'chsa, kodni o'zgartirmasdan Railway'dagi
+# `MINI_APP_URL` env o'zgaruvchisini yangilash kifoya.
+MINI_APP_URL = os.environ.get(
+    "MINI_APP_URL", "https://musa-andijon-v3ug.vercel.app"
+).strip().rstrip("/")
 # Admin panel — o'sha domendagi alohida sahifa. Bot uni faqat
 # adminlarga ko'rsatadi va u Telegram oynasida to'liq ekranda ochiladi.
 ADMIN_PANEL_URL = f"{MINI_APP_URL}/admin.html"
