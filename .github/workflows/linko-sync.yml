@@ -33,7 +33,7 @@ jobs:
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
           # Sayt manzili: Settings → Secrets and variables → Actions →
           # Variables → SITE_URL. Bo'sh bo'lsa pastdagi zaxira ishlatiladi.
-          SITE_URL: ${{ vars.SITE_URL || 'https://musa-andijon-v3ug.vercel.app' }}
+          SITE_URL: ${{ vars.SITE_URL || 'https://musa-andijon-three.vercel.app' }}
         run: |
           if [ -z "$CRON_SECRET" ]; then
             echo "::error::CRON_SECRET sozlanmagan (Settings → Secrets and variables → Actions)"

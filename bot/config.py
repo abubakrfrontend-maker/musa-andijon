@@ -2,7 +2,7 @@
 # MUSA Andijon — bot sozlamalari
 #
 # Bot @musa_andijon_bot, Firebase loyihasi `musa-andijon`,
-# sayt (mini app va admin panel) — musa-andijon-v3ug.vercel.app.
+# sayt (mini app va admin panel) — musa-andijon-three.vercel.app.
 #
 # Frontend tomonidagi mos fayllar:
 #   src/config/brand.ts     — bot username, aloqa ma'lumotlari
@@ -48,7 +48,7 @@ ADMIN_IDS    = {7203124812}   # Egalar — panel orqali o'chirib bo'lmaydi.
 # Sayt boshqa Vercel'ga ko'chsa, kodni o'zgartirmasdan Railway'dagi
 # `MINI_APP_URL` env o'zgaruvchisini yangilash kifoya.
 MINI_APP_URL = os.environ.get(
-    "MINI_APP_URL", "https://musa-andijon-v3ug.vercel.app"
+    "MINI_APP_URL", "https://musa-andijon-three.vercel.app"
 ).strip().rstrip("/")
 # Admin panel — o'sha domendagi alohida sahifa. Bot uni faqat
 # adminlarga ko'rsatadi va u Telegram oynasida to'liq ekranda ochiladi.

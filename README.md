@@ -33,7 +33,7 @@ Firebase loyihasi `musa-andijon`, bot `@musa_andijon_bot` — kodda yozildi
 (`src/config/firebase.ts`, `src/config/brand.ts`, `bot/config.py`, `bot/.env`).
 Qolganlari:
 
-- sayt: `musa-andijon-v3ug.vercel.app` (Vercel, GitHub `ZeroHacker557/musa-andijon`);
+- sayt: `musa-andijon-three.vercel.app` (Vercel, GitHub `abubakrfrontend-maker/musa-andijon`);
 - Vercel env: `BOT_TOKEN`, `FIREBASE_SERVICE_ACCOUNT`, `ADMIN_PANEL_URL`, `LINKO_TOKEN`, `CRON_SECRET`;
 - Firebase Console: Authentication → Email/Password yoqish, Firestore Rules;
 - birinchi admin: `node scripts/create-staff.mjs <email> <parol> owner`.
