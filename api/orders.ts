@@ -1,4 +1,4 @@
-import { isInServiceArea } from './_lib/service-area'
+import { isInServiceArea } from './_lib/service-area.js'
 import type { VercelRequest, VercelResponse } from '@vercel/node'
 import {
   AWAITING_PAYMENT, LOW_STOCK_AT, bumpOrdersSignal, notifyLowStock, notifyNewOrder,
