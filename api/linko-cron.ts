@@ -47,7 +47,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(200).json(await runTasks())
   }
 
-  // Eski bot mijozlarining turini bir martada yangilash (faqat tur, boshqa maydonlar emas)
+  // Eski bot mijozlarining turi va filialini bir martada yangilash (boshqa maydonlar o'zgarmaydi)
   if (req.query.markets === '1') {
     const one = typeof req.query.user === 'string' ? req.query.user : ''
     return res.status(200).json(await linkoSyncMarketTypes(one ? { userId: one } : {}))

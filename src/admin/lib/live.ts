@@ -431,6 +431,8 @@ export type LinkoSettings = {
   currencyId: number
   /** Botdan kelgan mijozning Linko'dagi turi (Telegram bot B2C). */
   marketTypeId?: number
+  /** Botdan kelgan mijoz Ritm'da qaysi filialda (2 — Андижон). */
+  branchId?: number
   lastSyncAt: string | null
   lastReport: string | null
   /** Avtomatik qayta yuborishning oxirgi natijasi (api/linko-cron.ts). */

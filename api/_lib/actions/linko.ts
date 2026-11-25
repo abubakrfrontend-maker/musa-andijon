@@ -304,6 +304,7 @@ export async function linkoSettingsSave(
   if ('orderStockId' in body) update.orderStockId = Math.round(num(body.orderStockId))
   if ('currencyId' in body) update.currencyId = Math.round(num(body.currencyId)) || 1
   if ('marketTypeId' in body) update.marketTypeId = Math.max(0, Math.round(num(body.marketTypeId)))
+  if ('branchId' in body) update.branchId = Math.max(0, Math.round(num(body.branchId)))
 
   const db = await adminDb()
   await db.collection('settings').doc('linko').set(update, { merge: true })

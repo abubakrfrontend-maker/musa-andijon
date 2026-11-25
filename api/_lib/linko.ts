@@ -44,6 +44,13 @@ export type LinkoSettings = {
    * «Telegram bot B2C». 0 — ko'rsatilmaydi (Linko o'zi «Розничный» qo'yadi).
    */
   marketTypeId: number
+  /**
+   * Botdan kelgan mijoz qaysi FILIALga yoziladi. Ritm'da filial buyurtmaga
+   * emas, mijozga («market») biriktiriladi va buyurtma o'shani oladi.
+   * Ko'rsatilmasa Linko yangi mijozni birinchi filialga (Ташкент) qo'yadi.
+   * 2 — Андижон (Ritm'da Андижон skladi buyurtmalari, 2026-11-25 tekshirildi).
+   */
+  branchId: number
   /** Oxirgi sinxronlash kursorlari (Linko `tm` qiymatlari). */
   lastProductTm: number
   lastPriceTm: number
@@ -66,6 +73,7 @@ export const LINKO_DEFAULTS: LinkoSettings = {
   orderStockId: 0,
   currencyId: 1,
   marketTypeId: 0,
+  branchId: 2,
   lastProductTm: 0,
   lastPriceTm: 0,
   lastBalanceTm: 0,

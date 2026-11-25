@@ -216,7 +216,7 @@ export function LinkoPage() {
 
       {/* ── Buyurtmalarni yuborish ── */}
       <OrdersCard
-        key={`orders:${settings.sendOrders}|${settings.agentId}|${settings.deliveryManId}|${settings.orderStockId}|${settings.marketTypeId ?? 0}`}
+        key={`orders:${settings.sendOrders}|${settings.agentId}|${settings.deliveryManId}|${settings.orderStockId}|${settings.marketTypeId ?? 0}|${settings.branchId ?? 2}`}
         settings={settings}
         status={status}
         busy={busy}
@@ -526,6 +526,7 @@ type OrderValues = {
   deliveryManId: number
   orderStockId: number
   marketTypeId: number
+  branchId: number
 }
 
 /**
@@ -547,6 +548,7 @@ function OrdersCard({
     deliveryManId: number
     orderStockId: number
     marketTypeId?: number
+    branchId?: number
     stockIds: number[]
     lastOrderPush?: { at: string; sent: number; failed: number; skipped: number; checked: number; errors?: string[] } | null
   }
@@ -561,6 +563,8 @@ function OrdersCard({
     String(settings.orderStockId || settings.stockIds[0] || ''),
   )
   const [marketTypeId, setMarketTypeId] = useState(String(settings.marketTypeId || ''))
+  // Sozlama hali saqlanmagan bo'lsa server standarti — 2 (Андижон)
+  const [branchId, setBranchId] = useState(String(settings.branchId ?? 2))
 
   const users = status?.users ?? []
   // Linko'da lavozimlar ruscha nomlanadi
@@ -629,6 +633,20 @@ function OrdersCard({
             Botdan kelgan mijoz Linko’da shu turda yoziladi. Bo‘sh — Linko o‘zi «Розничный» qo‘yadi.
           </p>
         </div>
+
+        <div className="sm:col-span-2">
+          <label className="adm-label">Filial (Linko ID)</label>
+          <input
+            className="adm-input"
+            inputMode="numeric"
+            value={branchId}
+            onChange={(e) => setBranchId(e.target.value.replace(/\D/g, ''))}
+            placeholder="2 — Андижон"
+          />
+          <p className="mt-1 text-xs" style={{ color: 'var(--faint)' }}>
+            Buyurtma Ritm’da mijozning filialiga tushadi. 2 — Андижон. Bo‘sh qolsa Linko birinchi filialni (Ташкент) qo‘yadi.
+          </p>
+        </div>
       </div>
 
       <label className="mt-4 flex items-center gap-2.5 text-sm font-semibold">
@@ -684,6 +702,7 @@ function OrdersCard({
             deliveryManId: 0,
             orderStockId: Number(orderStockId) || 0,
             marketTypeId: Number(marketTypeId) || 0,
+            branchId: Number(branchId) || 0,
           })}
           disabled={busy === 'orders'}
         >

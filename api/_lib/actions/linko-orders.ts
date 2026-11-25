@@ -159,6 +159,8 @@ async function syncMarket(
     ...(settings.priceListId ? { price_list: { linko_id: settings.priceListId } } : {}),
     // Mijoz turi («Telegram bot B2C») — mavjud mijozda ham keyingi buyurtmada yangilanadi
     ...(settings.marketTypeId ? { market_type: { linko_id: settings.marketTypeId } } : {}),
+    // Filial — bo'lmasa Linko birinchi filialni (Ташкент) qo'yadi
+    ...(settings.branchId ? { branch: { linko_id: settings.branchId } } : {}),
   }]
 
   const body = await linkoPost<{ results?: { id?: number }[]; errors?: unknown[] }>(
@@ -237,6 +239,7 @@ export async function pushCustomerToLinko(
     ...(agent ? { responsible_agent: { linko_id: agent } } : {}),
     ...(settings.priceListId ? { price_list: { linko_id: settings.priceListId } } : {}),
     ...(type ? { market_type: { linko_id: type } } : {}),
+    ...(settings.branchId ? { branch: { linko_id: settings.branchId } } : {}),
   }], settings)
   if (body.errors?.length) throw new Error(`Ritm qabul qilmadi: ${JSON.stringify(body.errors).slice(0, 200)}`)
 }
@@ -799,7 +802,7 @@ export async function linkoPushOrder(_staff: unknown, body: Record<string, unkno
  * Botdan kelgan ESKI mijozlarning turini bir martada yangilaydi (sozlamadagi
  * `marketTypeId`, masalan «Telegram bot B2C»).
  *
- * Faqat tur o'zgaradi. Linko ismni majburiy talab qiladi, shuning uchun
+ * Faqat tur va filial (`branchId`, Андижон) o'zgaradi. Linko ismni majburiy talab qiladi, shuning uchun
  * mijozning Linko'dagi HOZIRGI ismi o'qib olinadi va o'zgarmasdan qaytadi
  * (qo'lda o'zgartirilgan nom ustidan yozilmasin). Agent, narx ro'yxati,
  * manzil yuborilmaydi. Mijozlar — Linko'ga tushgan buyurtmalardagi
@@ -809,7 +812,9 @@ export async function linkoPushOrder(_staff: unknown, body: Record<string, unkno
  */
 export async function linkoSyncMarketTypes(body: Record<string, unknown> = {}): Promise<Result> {
   const settings = await readLinkoSettings()
-  if (!settings.marketTypeId) return { ok: false, error: 'Mijoz turi (marketTypeId) sozlanmagan' }
+  if (!settings.marketTypeId && !settings.branchId) {
+    return { ok: false, error: 'Mijoz turi ham, filial ham sozlanmagan' }
+  }
 
   const db = await adminDb()
   const snap = await db.collection('orders').where('linko.marketId', '>', 0).get()
@@ -832,6 +837,7 @@ export async function linkoSyncMarketTypes(body: Record<string, unknown> = {}): 
     name?: string
     service_id?: string | null
     market_type?: { id?: number } | null
+    branch?: { id?: number } | null
     market_phones?: { phone?: string }[]
     address?: string | null
     location?: { lat?: number; lon?: number } | null
@@ -854,7 +860,9 @@ export async function linkoSyncMarketTypes(body: Record<string, unknown> = {}): 
       notFound.push(id)
       continue
     }
-    if (row.market_type?.id === settings.marketTypeId) {
+    const typeOk = !settings.marketTypeId || row.market_type?.id === settings.marketTypeId
+    const branchOk = !settings.branchId || row.branch?.id === settings.branchId
+    if (typeOk && branchOk) {
       already++
       continue
     }
@@ -876,7 +884,10 @@ export async function linkoSyncMarketTypes(body: Record<string, unknown> = {}): 
           : {}),
         ...(row.responsible_agent?.id ? { responsible_agent: { linko_id: row.responsible_agent.id } } : {}),
         ...(settings.priceListId ? { price_list: { linko_id: settings.priceListId } } : {}),
-        market_type: { linko_id: settings.marketTypeId },
+        ...(settings.marketTypeId
+          ? { market_type: { linko_id: settings.marketTypeId } }
+          : row.market_type?.id ? { market_type: { linko_id: row.market_type.id } } : {}),
+        ...(settings.branchId ? { branch: { linko_id: settings.branchId } } : {}),
       }], settings)
       if (res.errors?.length) errors.push(`${id}: ${JSON.stringify(res.errors).slice(0, 200)}`)
       else updated++
